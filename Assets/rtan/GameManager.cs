@@ -152,8 +152,8 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            firstCard.transform.Find("back").GetComponent<SpriteRenderer>().color = new Color(180 / 255f, 180 / 255f, 180 / 255f, 255f); // 뒤집힌 카드 색 변화
-            secondCard.transform.Find("back").GetComponent<SpriteRenderer>().color = new Color(180 / 255f, 180 / 255f, 180 / 255f, 255f);
+            firstCard.transform.Find("back").GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 164 / 255f, 0, 255f); // 뒤집힌 카드 색 변화
+            secondCard.transform.Find("back").GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 164 / 255f, 0, 255f);
             firstCard.GetComponent<card>().closeCard();
             secondCard.GetComponent<card>().closeCard();
             countDownCheck = false; // kim

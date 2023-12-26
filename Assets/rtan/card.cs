@@ -48,7 +48,7 @@ public class card : MonoBehaviour
         {
             GameManager.I.countDownCheck = true; // kim
             GameManager.I.firstCard = gameObject;
-            GameManager.I.firstCard.transform.Find("back").GetComponent<SpriteRenderer>().color = new Color(180 / 255f, 180 / 255f, 180 / 255f, 255f); // kim   
+            GameManager.I.firstCard.transform.Find("back").GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 164 / 255f, 0, 255f); // kim   
         }
         else
         {
