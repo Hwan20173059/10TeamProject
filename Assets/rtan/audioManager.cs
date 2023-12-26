@@ -17,8 +17,7 @@ public class audioManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        audioSource.clip = bgmusic;
-        audioSource.Play();
+        BGMPlay(bgmusic);
     }
 
 
@@ -31,5 +30,13 @@ public class audioManager : MonoBehaviour
 
         Destroy(newObj, clip.length);
         //KangSungwon Commit Test
+    }
+
+    public void BGMPlay(AudioClip bgm) //배경음 플레이 해주는 함수
+    {
+        audioSource.clip = bgm;
+        audioSource.loop = true;//배경음이니까 계속 나오도록
+        audioSource.volume = 0.3f;
+        audioSource.Play();
     }
 }

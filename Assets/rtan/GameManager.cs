@@ -106,13 +106,12 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        time += Time.deltaTime;
-        timeText.text = time.ToString("N2");
+        timeText.text = TimerManager.instance.elapsedTime.ToString("N2");
 
         if(time > 30)
         {
             failTxt.SetActive(true);
-            Time.timeScale = 0.0f;
+            TimerManager.instance.StopTimer();
         }
 
         if (countDownCheck)
@@ -167,7 +166,7 @@ public class GameManager : MonoBehaviour
     void endgame()
     {
         endTxt.SetActive(true);
-        Time.timeScale = 0.0f;
+        TimerManager.instance.StopTimer();
     }
 
 }
