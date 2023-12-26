@@ -1064,6 +1064,7 @@ MonoBehaviour:
   failTxt: {fileID: 274999120}
   audioSource: {fileID: 2055962602}
   match: {fileID: 8300000, guid: 00b162357490c5a4680ee5033ddb71b1, type: 3}
+  mismatch: {fileID: 8300000, guid: c346ba0e5a2937f43b47696e82ba272f, type: 3}
   firstCard: {fileID: 0}
   secondCard: {fileID: 0}
   countDownCheck: 0

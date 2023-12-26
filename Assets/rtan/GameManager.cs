@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
 
     public AudioSource audioSource;
     public AudioClip match;
+    public AudioClip mismatch;
 
     public static GameManager I;
 
@@ -135,7 +136,7 @@ public class GameManager : MonoBehaviour
 
         if (firstCardImage == secondCardImage)
         {
-            audioSource.PlayOneShot(match);
+            audioManager.instance.SFXPlay("match", match);
 
             firstCard.GetComponent<card>().destroyCard();
             secondCard.GetComponent<card>().destroyCard();
@@ -151,6 +152,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            audioManager.instance.SFXPlay("mismatch", mismatch);
             firstCard.transform.Find("back").GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 164 / 255f, 0, 255f); // 뒤집힌 카드 색 변화
             secondCard.transform.Find("back").GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 164 / 255f, 0, 255f);
             firstCard.GetComponent<card>().closeCard();
