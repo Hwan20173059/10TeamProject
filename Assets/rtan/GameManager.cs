@@ -23,6 +23,10 @@ public class GameManager : MonoBehaviour
     public GameObject firstCard;
     public GameObject secondCard;
 
+    public bool countDownCheck = false; // kim 작업내용 추가
+    float countDown = 5.0f;
+    public Text countDownTxt; // 끝
+
     void Awake()
     {
         I = this;
@@ -110,6 +114,19 @@ public class GameManager : MonoBehaviour
             failTxt.SetActive(true);
             Time.timeScale = 0.0f;
         }
+
+        if (countDownCheck)
+        {
+            countDown -= Time.deltaTime;
+            countDownTxt.text = countDown.ToString("N1");
+            if (countDown <= 0.0f)
+            {
+                firstCard.GetComponent<card>().CountDown();
+                firstCard = null;
+                countDown = 5.0f;
+            }
+        }
+
     }
 
     public void isMatched()
@@ -123,6 +140,8 @@ public class GameManager : MonoBehaviour
 
             firstCard.GetComponent<card>().destroyCard();
             secondCard.GetComponent<card>().destroyCard();
+            countDownCheck = false;  // kim 
+            countDown = 5.0f;
 
             int cardsLeft = GameObject.Find("Cards").transform.childCount;
             Debug.Log(cardsLeft);
@@ -137,6 +156,8 @@ public class GameManager : MonoBehaviour
             secondCard.transform.Find("back").GetComponent<SpriteRenderer>().color = new Color(180 / 255f, 180 / 255f, 180 / 255f, 255f);
             firstCard.GetComponent<card>().closeCard();
             secondCard.GetComponent<card>().closeCard();
+            countDownCheck = false; // kim
+            countDown = 5.0f;
         }
 
         firstCard = null;
