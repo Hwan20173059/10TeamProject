@@ -46,12 +46,23 @@ public class card : MonoBehaviour
 
         if (GameManager.I.firstCard == null)
         {
+            GameManager.I.countDownCheck = true; // kim
             GameManager.I.firstCard = gameObject;
+            GameManager.I.firstCard.transform.Find("back").GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 164 / 255f, 0, 255f); // kim   
         }
         else
         {
             GameManager.I.secondCard = gameObject;
             GameManager.I.isMatched();
+        }
+    }
+
+    public void CountDown() // kim
+    {
+        if (GameManager.I.firstCard != null && GameManager.I.secondCard == null)
+        {
+            Invoke("closeCardInvoke", 0f);
+            GameManager.I.countDownCheck = false;
         }
     }
     void flip()
