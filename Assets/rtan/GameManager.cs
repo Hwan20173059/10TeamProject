@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     public AudioClip match;
     public AudioClip mismatch;
 
+    public Animator lastDence;
+
     public static GameManager I;
 
     public GameObject firstCard;
@@ -115,11 +117,17 @@ public class GameManager : MonoBehaviour
     {
         timeText.text = TimerManager.instance.elapsedTime.ToString("N2");
 
-        if(TimerManager.instance.elapsedTime > 60)//timermanager의 시간을 체크하여 60초가 넘으면 실패가 뜸
+        if(TimerManager.instance.elapsedTime > 90)//timermanager의 시간을 체크하여 60초가 넘으면 실패가 뜸 - 기존 60초인거 90초로 변경(박지훈)
         {
             failTxt.SetActive(true);
             TimerManager.instance.StopTimer();
         }
+        // 90초 기준 60초 이후부터 플레이어에게 시간 경고 표시
+        if (TimerManager.instance.elapsedTime >= 60)
+        {
+            lastDence.SetBool("emg", true);
+        }
+
 
         if (countDownCheck)
         {

@@ -21,6 +21,10 @@ public class TimerManager : MonoBehaviour
     void Update() 
     {
         elapsedTime += Time.deltaTime;
+        if (elapsedTime >= 60)
+        {
+            audioManager.instance.audioSource.pitch = 1.3f;
+        }
     }
 
     public void IncreaseTime(float plusTime) 
