@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using static UnityEngine.ParticleSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,7 +13,9 @@ public class GameManager : MonoBehaviour
     public Text timeText;
     public GameObject card;
     public GameObject endTxt;
+    public GameObject end; // 마지막 결과 텍스트 팝업창
     public GameObject failTxt;
+    public GameObject minusTxt;
     float time;
 
     public AudioSource audioSource;
@@ -27,6 +30,9 @@ public class GameManager : MonoBehaviour
     public bool countDownCheck = false; // kim 작업내용 추가
     float countDown = 5.0f;
     public Text countDownTxt; // 끝
+
+    int trial = 0;// 시도 횟수
+
 
     void Awake()
     {
@@ -109,7 +115,7 @@ public class GameManager : MonoBehaviour
     {
         timeText.text = TimerManager.instance.elapsedTime.ToString("N2");
 
-        if(time > 30)
+        if(TimerManager.instance.elapsedTime > 60)//timermanager의 시간을 체크하여 60초가 넘으면 실패가 뜸
         {
             failTxt.SetActive(true);
             TimerManager.instance.StopTimer();
@@ -133,6 +139,7 @@ public class GameManager : MonoBehaviour
     {
         string firstCardImage = firstCard.transform.Find("front").GetComponent<SpriteRenderer>().sprite.name;
         string secondCardImage = secondCard.transform.Find("front").GetComponent<SpriteRenderer>().sprite.name;
+        trial++;
 
         if (firstCardImage == secondCardImage)
         {
@@ -140,6 +147,8 @@ public class GameManager : MonoBehaviour
 
             firstCard.GetComponent<card>().destroyCard();
             secondCard.GetComponent<card>().destroyCard();
+
+            
             countDownCheck = false;  // kim 
             countDown = 5.0f;
 
@@ -153,6 +162,8 @@ public class GameManager : MonoBehaviour
         else
         {
             audioManager.instance.SFXPlay("mismatch", mismatch);
+            TimerManager.instance.IncreaseTime(3.0f);//틀리면 시간이 증가되는 문
+     
             firstCard.transform.Find("back").GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 164 / 255f, 0, 255f); // 뒤집힌 카드 색 변화
             secondCard.transform.Find("back").GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 164 / 255f, 0, 255f);
             firstCard.GetComponent<card>().closeCard();
@@ -165,9 +176,23 @@ public class GameManager : MonoBehaviour
         secondCard = null;
     }
 
-    void endgame()
+    void endgame()//정상적으로 다 맞추고 종료하면 결과 점수 표시
     {
-        endTxt.SetActive(true);
+        float finalTime = 30f - time;
+
+        if (finalTime < 0)
+        {
+            finalTime = 0;
+            endTxt.GetComponent<Text>().text = "시도한 횟수 : " + trial + "\n" + "남은 시간 : " + finalTime + "\n" +
+    "점수 : " + 0;
+        }
+        else
+        {
+            endTxt.GetComponent<Text>().text = "시도한 횟수 : " + trial + "\n" + "남은 시간 : " + finalTime + "\n" +
+    "점수 : " + (trial * 3 + Mathf.Sqrt(finalTime));
+        }
+
+        end.SetActive(true);
         TimerManager.instance.StopTimer();
     }
 
