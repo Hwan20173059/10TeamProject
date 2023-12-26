@@ -8,6 +8,7 @@ public class TimerManager : MonoBehaviour
 {
     public static TimerManager instance;
     public GameObject plusTimeText;
+    public bool timeStop = false;
 
     public float elapsedTime { get; private set; }
 
@@ -23,11 +24,19 @@ public class TimerManager : MonoBehaviour
 
     void Update() 
     {
-        elapsedTime += Time.deltaTime;
-        if (elapsedTime >= 60)
+        if (timeStop == false)
         {
-            audioManager.instance.audioSource.pitch = 1.3f;
+            elapsedTime += Time.deltaTime;
+            if (elapsedTime >= 60)
+            {
+                audioManager.instance.audioSource.pitch = 1.3f;
+            }
         }
+        else
+        {
+
+        }
+       
     }
 
     public void IncreaseTime(float plusTime) 
@@ -46,5 +55,10 @@ public class TimerManager : MonoBehaviour
     public void StopTimer() 
     {
         Time.timeScale = 0.0f;
+    }
+
+    public void StartTimer()
+    {
+        Time.timeScale = 1f;
     }
 }
