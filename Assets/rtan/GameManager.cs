@@ -34,6 +34,11 @@ public class GameManager : MonoBehaviour
     public Text countDownTxt; // 끝
 
     int trial = 0;// 시도 횟수
+    int chance = 0;
+    int cardNumb = 0;
+    bool startcheck = false;
+    int maxNumb = 0;
+    int[] rtans;
 
 
     void Awake()
@@ -49,72 +54,47 @@ public class GameManager : MonoBehaviour
 
         if(difficult == 0 )
         {
-            int[] rtans = { 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
+            rtans = new int[12] { 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
 
             rtans = rtans.OrderBy(item => Random.Range(-1.0f, 1.0f)).ToArray();
+            maxNumb = 12;
 
-            for (int i = 0; i < 12; i++)
-            {
-                Card.Type = rtans[i];
-                GameObject newCard = Instantiate(card);
-                newCard.transform.parent = GameObject.Find("Cards").transform;
-
-                float x = (i % 4) * 1.4f - 2.1f;
-                float y = (i / 4) * 1.4f - 2.0f;
-                newCard.transform.position = new Vector3(x, y, 0);
-
-                string rtanName = "rtan" + rtans[i].ToString();
-
-                newCard.transform.Find("front").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(rtanName);
-            }
         }
         else if(difficult == 1) 
         {
-            int[] rtans = { 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7 };
+            rtans = new int[16] { 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7 };
 
             rtans = rtans.OrderBy(item => Random.Range(-1.0f, 1.0f)).ToArray();
+            maxNumb = 16;
 
-            for (int i = 0; i < 16; i++)
-            {
-                Card.Type = rtans[i];
-                GameObject newCard = Instantiate(card);
-                newCard.transform.parent = GameObject.Find("Cards").transform;
-
-                float x = (i / 4) * 1.4f - 2.1f;
-                float y = (i % 4) * 1.4f - 3.0f;
-                newCard.transform.position = new Vector3(x, y, 0);
-
-                string rtanName = "rtan" + rtans[i].ToString();
-
-                newCard.transform.Find("front").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(rtanName);
-            }
         }
         else if (difficult == 2)
         {
-            int[] rtans = { 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9 };
+            rtans = new int[20] { 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9 };
 
             rtans = rtans.OrderBy(item => Random.Range(-1.0f, 1.0f)).ToArray();
-
-            for (int i = 0; i < 20; i++)
-            {
-                Card.Type = rtans[i];
-                GameObject newCard = Instantiate(card);
-                newCard.transform.parent = GameObject.Find("Cards").transform;
-
-                float x = (i % 4) * 1.4f - 2.1f;
-                float y = (i / 4) * 1.4f - 4.0f;                
-                newCard.transform.position = new Vector3(x, y, 0);
-
-                string rtanName = "rtan" + rtans[i].ToString();
-
-                newCard.transform.Find("front").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(rtanName);
-            }
+            maxNumb = 20;
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+        chance++;
+
+        if (chance == 20 && cardNumb < maxNumb && startcheck == false)
+        {
+            cardNumb++;
+            CardSet(cardNumb);
+            chance = 0;
+
+        }
+        else if (cardNumb >= maxNumb && chance == 20 && startcheck == false)
+        {
+            TimerManager.instance.StartTimer();
+            startcheck = true;
+        }
+
         timeText.text = TimerManager.instance.elapsedTime.ToString("N2");
 
         if(TimerManager.instance.elapsedTime > 90)//timermanager의 시간을 체크하여 60초가 넘으면 실패가 뜸 - 기존 60초인거 90초로 변경(박지훈)
@@ -143,6 +123,30 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public void CardSet(int i)
+    {
+        i = i - 1;
+        GameObject newCard = Instantiate(card);
+        newCard.transform.parent = GameObject.Find("Cards").transform;
+        newCard.GetComponent<card>().Type = rtans[i];
+        newCard.transform.position = new Vector3(2.5f, 3.5f, 0);
+
+        float x = (i % 4) * 1.4f - 2.1f;
+        float y = (i / 4) * 1.4f - 2.0f;
+        newCard.GetComponent<card>().finalX = x;
+        newCard.GetComponent<card>().finalY = y;
+
+
+        string rtanName = "rtan" + rtans[i].ToString();
+
+        newCard.transform.Find("front").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(rtanName);
+    }
+
+    public void BombPlay(float x, float y)
+    {
+
+    }
+
     public void isMatched()
     {
         string firstCardImage = firstCard.transform.Find("front").GetComponent<SpriteRenderer>().sprite.name;
@@ -164,6 +168,7 @@ public class GameManager : MonoBehaviour
             Debug.Log(cardsLeft);
             if (cardsLeft == 2)
             {
+                TimerManager.instance.timeStop = true;
                 Invoke("endgame", 1.0f);
             }
         }

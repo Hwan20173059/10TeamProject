@@ -21,6 +21,18 @@ public class card : MonoBehaviour
     Vector3 targetScale;
     bool isFlip = false;
 
+    public float finalX;
+    public float finalY;
+    float localX = 2.5f;
+    float localY = 3.5f;
+    float extraX = 2.5f;
+    float extraY = 3.5f;
+
+    int check1 = 0;
+    int checkCount = 0;
+    int checkOnce = 0;
+    bool checkGo = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,20 +42,72 @@ public class card : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Time.timeScale == 0)
+        /*if (Time.timeScale == 0)
         {
             transform.DOKill();
+        }*/
+
+        check1++;
+
+        if (check1 == 10 && checkGo == true)
+        {
+
+            if (checkCount == 10)
+            {
+                transform.position = new Vector3(finalX, finalY, 0);
+                checkOnce = 1;
+                GameManager.I.BombPlay(finalX, finalY);
+                checkCount = 0;
+                checkGo = false;
+            }
+            else
+            {
+
+                if ((finalX - extraX) != 0 && (finalY - extraY) != 0)
+                {
+                    transform.position = new Vector3(extraX, extraY, 0);
+                    extraX += (finalX - localX) / 10.0f;
+                    extraY += (finalY - localY) / 10.0f;
+                    checkCount++;
+                }
+                else if ((finalX - extraX) == 0 && (finalY - extraY) != 0)
+                {
+                    transform.position = new Vector3(extraX, extraY, 0);
+                    extraY += (finalY - localY) / 10.0f;
+                    checkCount++;
+                }
+                else if ((finalX - extraX) != 0 && (finalY - extraY) == 0)
+                {
+                    transform.position = new Vector3(extraX, extraY, 0);
+                    extraX += (finalX - localX) / 10.0f;
+                    checkCount++;
+                }
+                else if ((finalX - extraX) == 0 && (finalY - extraY) == 0)
+                {
+                    transform.position = new Vector3(finalX, finalY, 0);
+                    GameManager.I.BombPlay(finalX, finalY);
+                    checkCount = 0;
+                    checkGo = false;
+                }
+
+            }
+            check1 = 0;
+
         }
-        if (Type == 0 || Type == 1)
-            Name.text = "김동환";
-        else if (Type == 2 || Type == 3)
-            Name.text = "김승현";
-        else if (Type == 4 || Type == 5)
-            Name.text = "김철우";
-        else if (Type == 6 || Type == 7)
-            Name.text = "강성원";
-        else if (Type == 8 || Type == 9)
-            Name.text = "박지훈";
+        else if (checkGo == false && checkOnce == 1)
+        {
+
+            if (Type == 0 || Type == 1)
+                Name.text = "김동환";
+            else if (Type == 2 || Type == 3)
+                Name.text = "김승현";
+            else if (Type == 4 || Type == 5)
+                Name.text = "김철우";
+            else if (Type == 6 || Type == 7)
+                Name.text = "강성원";
+            else if (Type == 8 || Type == 9)
+                Name.text = "박지훈";
+        }
     }
 
     public void openCard()
