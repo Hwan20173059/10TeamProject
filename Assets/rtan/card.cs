@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
@@ -9,7 +10,6 @@ public class card : MonoBehaviour
     public Animator anim;
 
     public AudioClip flips;
-    public AudioSource audioSource;
 
     public GameObject NameText;
     public GameObject FailText;
@@ -35,23 +35,25 @@ public class card : MonoBehaviour
             transform.DOKill();
         }
         if (Type == 0 || Type == 1)
-            Name.text = "±èµ¿È¯";
+            Name.text = "ê¹€ë™í™˜";
         else if (Type == 2 || Type == 3)
-            Name.text = "±è½ÂÇö";
+            Name.text = "ê¹€ìŠ¹í˜„";
         else if (Type == 4 || Type == 5)
-            Name.text = "±èÃ¶¿ì";
+            Name.text = "ê¹€ì² ìš°";
         else if (Type == 6 || Type == 7)
-            Name.text = "°­¼º¿ø";
+            Name.text = "ê°•ì„±ì›";
         else if (Type == 8 || Type == 9)
-            Name.text = "¹ÚÁöÈÆ";
+            Name.text = "ë°•ì§€í›ˆ";
     }
 
     public void openCard()
     {
+
         if (Time.timeScale > 0 && !isFlip)
         {
             anim.enabled = false;
             isFlip = true;
+
 
             originalScale = transform.localScale;
             targetScale = new Vector3(0, originalScale.y, originalScale.z);
@@ -62,6 +64,7 @@ public class card : MonoBehaviour
 
                 anim.enabled = true;
                 anim.SetBool("isOpen", true);
+                audioManager.instance.SFXPlay("flips", flips);
                 Invoke("flip", 0f);
                 
                 transform.DOScale(originalScale, 0.2f).OnComplete(() =>
@@ -70,14 +73,27 @@ public class card : MonoBehaviour
                 });
             });
             if (GameManager.I.firstCard == null)
-            {
-                GameManager.I.firstCard = gameObject;
-            }
-            else
-            {
-                GameManager.I.secondCard = gameObject;
-                GameManager.I.isMatched();
-            }
+        {
+            GameManager.I.countDownCheck = true; // kim
+            GameManager.I.firstCard = gameObject;
+            GameManager.I.firstCard.transform.Find("back").GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 164 / 255f, 0, 255f); // kim   
+        }
+        else
+        {
+            GameManager.I.secondCard = gameObject;
+            GameManager.I.isMatched();
+        }
+        }
+    }
+
+    }
+
+    public void CountDown() // kim
+    {
+        if (GameManager.I.firstCard != null && GameManager.I.secondCard == null)
+        {
+            Invoke("closeCardInvoke", 0f);
+            GameManager.I.countDownCheck = false;
         }
     }
 

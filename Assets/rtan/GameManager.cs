@@ -17,13 +17,20 @@ public class GameManager : MonoBehaviour
 
     public AudioSource audioSource;
     public AudioClip match;
+    public AudioClip mismatch;
 
     public static GameManager I;
 
     public GameObject firstCard;
     public GameObject secondCard;
 
+
     public Animator lastDence;
+
+    public bool countDownCheck = false; // kim ìž‘ì—…ë‚´ìš© ì¶”ê°€
+    float countDown = 5.0f;
+    public Text countDownTxt; // ë
+
 
     void Awake()
     {
@@ -104,19 +111,34 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        time += Time.deltaTime;
-        timeText.text = time.ToString("N2");
+        timeText.text = TimerManager.instance.elapsedTime.ToString("N2");
 
         if(time > 30)
         {
             failTxt.SetActive(true);
-            Time.timeScale = 0.0f;
+            TimerManager.instance.StopTimer();
         }
-        // 20ÃÊ ºÎÅÍ ºÓÀº ¼ýÀÚ¿Í ±ôºýÀÓ
+
+        // 20ì´ˆ ë¶€í„° ë¶‰ì€ ìˆ«ìžì™€ ê¹œë¹¡ìž„
         if (time >= 20.0f)
         {
             lastDence.SetBool("emg", true);
         }
+
+
+        if (countDownCheck)
+        {
+            countDown -= Time.deltaTime;
+            countDownTxt.text = countDown.ToString("N1");
+            if (countDown <= 0.0f)
+            {
+                firstCard.GetComponent<card>().CountDown();
+                firstCard = null;
+                countDown = 5.0f;
+            }
+        }
+
+
     }
 
     public void isMatched()
@@ -126,10 +148,12 @@ public class GameManager : MonoBehaviour
 
         if (firstCardImage == secondCardImage)
         {
-            audioSource.PlayOneShot(match);
+            audioManager.instance.SFXPlay("match", match);
 
             firstCard.GetComponent<card>().destroyCard();
             secondCard.GetComponent<card>().destroyCard();
+            countDownCheck = false;  // kim 
+            countDown = 5.0f;
 
             int cardsLeft = GameObject.Find("Cards").transform.childCount;
             Debug.Log(cardsLeft);
@@ -140,8 +164,13 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            audioManager.instance.SFXPlay("mismatch", mismatch);
+            firstCard.transform.Find("back").GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 164 / 255f, 0, 255f); // ë’¤ì§‘ížŒ ì¹´ë“œ ìƒ‰ ë³€í™”
+            secondCard.transform.Find("back").GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 164 / 255f, 0, 255f);
             firstCard.GetComponent<card>().closeCard();
             secondCard.GetComponent<card>().closeCard();
+            countDownCheck = false; // kim
+            countDown = 5.0f;
         }
 
         firstCard = null;
@@ -151,7 +180,7 @@ public class GameManager : MonoBehaviour
     void endgame()
     {
         endTxt.SetActive(true);
-        Time.timeScale = 0.0f;
+        TimerManager.instance.StopTimer();
     }
 
 }
