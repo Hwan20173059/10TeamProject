@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject firstCard;
     public GameObject secondCard;
+    public GameObject Explosion;
 
     public bool countDownCheck = false; // kim 작업내용 추가
     float countDown = 5.0f;
@@ -132,7 +133,7 @@ public class GameManager : MonoBehaviour
         newCard.transform.position = new Vector3(2.5f, 3.5f, 0);
 
         float x = (i % 4) * 1.4f - 2.1f;
-        float y = (i / 4) * 1.4f - 2.0f;
+        float y = (i / 4) * 1.4f - 4.0f;
         newCard.GetComponent<card>().finalX = x;
         newCard.GetComponent<card>().finalY = y;
 
@@ -144,7 +145,9 @@ public class GameManager : MonoBehaviour
 
     public void BombPlay(float x, float y)
     {
-
+        GameObject newBomb = Instantiate(Explosion);
+        Explosion.transform.position = new Vector3(x, y, 0);
+        Destroy(newBomb);
     }
 
     public void isMatched()
