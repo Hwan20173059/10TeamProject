@@ -34,18 +34,11 @@ public class audioManager : MonoBehaviour
 
     public void BGMPlay(AudioClip bgm) //배경음 플레이 해주는 함수
     {
-
         // BGM 빠르게 하기
-        if (GameManager.I.timeText.text == "20.00")
-        {
-            audioSource.pitch = 1.3f;
-        }
-
         audioSource.clip = bgm;
         audioSource.loop = true;//배경음이니까 계속 나오도록
         audioSource.volume = 0.3f;
         audioSource.Play();
-
     }
 
     //URL Change Test
