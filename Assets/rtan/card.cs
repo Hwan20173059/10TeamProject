@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class card : MonoBehaviour
 {
@@ -16,6 +17,10 @@ public class card : MonoBehaviour
     public int Type = 0;
     public Text Name;
 
+    Vector3 originalScale;
+    Vector3 targetScale;
+    bool isFlip = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +30,10 @@ public class card : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Time.timeScale == 0)
+        {
+            transform.DOKill();
+        }
         if (Type == 0 || Type == 1)
             Name.text = "�赿ȯ";
         else if (Type == 2 || Type == 3)
@@ -39,21 +48,39 @@ public class card : MonoBehaviour
 
     public void openCard()
     {
-        audioSource.PlayOneShot(flips);
-        anim.SetBool("isOpen", true);
-
-        Invoke("flip", 0.3f);
-
-        if (GameManager.I.firstCard == null)
+        if (Time.timeScale > 0 && !isFlip)
         {
-            GameManager.I.firstCard = gameObject;
-        }
-        else
-        {
-            GameManager.I.secondCard = gameObject;
-            GameManager.I.isMatched();
+            anim.enabled = false;
+            isFlip = true;
+
+            originalScale = transform.localScale;
+            targetScale = new Vector3(0, originalScale.y, originalScale.z);
+
+            transform.DOScale(targetScale, 0.2f).OnComplete(() =>
+            {
+                audioSource.PlayOneShot(flips);
+
+                anim.enabled = true;
+                anim.SetBool("isOpen", true);
+                Invoke("flip", 0f);
+                
+                transform.DOScale(originalScale, 0.2f).OnComplete(() =>
+                {
+                    isFlip = false;
+                });
+            });
+            if (GameManager.I.firstCard == null)
+            {
+                GameManager.I.firstCard = gameObject;
+            }
+            else
+            {
+                GameManager.I.secondCard = gameObject;
+                GameManager.I.isMatched();
+            }
         }
     }
+
     void flip()
     {
         transform.Find("front").gameObject.SetActive(true);
@@ -79,9 +106,24 @@ public class card : MonoBehaviour
 
     void closeCardInvoke()
     {
-        FailText.SetActive(false);
-        anim.SetBool("isOpen", false);
-        transform.Find("back").gameObject.SetActive(true);
-        transform.Find("front").gameObject.SetActive(false);
+        anim.enabled = false;
+        isFlip = true;
+
+        originalScale = transform.localScale;
+        targetScale = new Vector3(0, originalScale.y, originalScale.z);
+
+        transform.DOScale(targetScale, 0.2f).OnComplete(() =>
+        {
+            anim.enabled = true;
+            FailText.SetActive(false);
+            anim.SetBool("isOpen", false);
+            transform.Find("back").gameObject.SetActive(true);
+            transform.Find("front").gameObject.SetActive(false);
+
+            transform.DOScale(originalScale, 0.2f).OnComplete(() =>
+            {
+                isFlip = false;
+            });
+        });
     }
 }
