@@ -30,5 +30,6 @@ public class audioManager : MonoBehaviour
         audioSource.Play();
 
         Destroy(newObj, clip.length);
+        //KangSungwon Commit Test
     }
 }
