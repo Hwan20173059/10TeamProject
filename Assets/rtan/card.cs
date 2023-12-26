@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class card : MonoBehaviour
 {
@@ -16,6 +17,10 @@ public class card : MonoBehaviour
     public int Type = 0;
     public Text Name;
 
+    Vector3 originalScale;
+    Vector3 targetScale;
+    bool isFlip = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,26 +30,49 @@ public class card : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Time.timeScale == 0)
+        {
+            transform.DOKill();
+        }
         if (Type == 0 || Type == 1)
-            Name.text = "±èµ¿È¯";
+            Name.text = "ê¹€ë™í™˜";
         else if (Type == 2 || Type == 3)
-            Name.text = "±è½ÂÇö";
+            Name.text = "ê¹€ìŠ¹í˜„";
         else if (Type == 4 || Type == 5)
-            Name.text = "±èÃ¶¿ì";
+            Name.text = "ê¹€ì² ìš°";
         else if (Type == 6 || Type == 7)
-            Name.text = "°­¼º¿ø";
+            Name.text = "ê°•ì„±ì›";
         else if (Type == 8 || Type == 9)
-            Name.text = "¹ÚÁöÈÆ";
+            Name.text = "ë°•ì§€í›ˆ";
     }
 
     public void openCard()
     {
-        audioManager.instance.SFXPlay("flips", flips);
-        anim.SetBool("isOpen", true);
 
-        Invoke("flip", 0.3f);
+        if (Time.timeScale > 0 && !isFlip)
+        {
+            anim.enabled = false;
+            isFlip = true;
 
-        if (GameManager.I.firstCard == null)
+
+            originalScale = transform.localScale;
+            targetScale = new Vector3(0, originalScale.y, originalScale.z);
+
+            transform.DOScale(targetScale, 0.2f).OnComplete(() =>
+            {
+                audioSource.PlayOneShot(flips);
+
+                anim.enabled = true;
+                anim.SetBool("isOpen", true);
+                audioManager.instance.SFXPlay("flips", flips);
+                Invoke("flip", 0f);
+                
+                transform.DOScale(originalScale, 0.2f).OnComplete(() =>
+                {
+                    isFlip = false;
+                });
+            });
+            if (GameManager.I.firstCard == null)
         {
             GameManager.I.countDownCheck = true; // kim
             GameManager.I.firstCard = gameObject;
@@ -55,6 +83,9 @@ public class card : MonoBehaviour
             GameManager.I.secondCard = gameObject;
             GameManager.I.isMatched();
         }
+        }
+    }
+
     }
 
     public void CountDown() // kim
@@ -65,6 +96,7 @@ public class card : MonoBehaviour
             GameManager.I.countDownCheck = false;
         }
     }
+
     void flip()
     {
         transform.Find("front").gameObject.SetActive(true);
@@ -74,7 +106,7 @@ public class card : MonoBehaviour
     public void destroyCard()
     {
         NameText.SetActive(true);
-        Invoke("destroyCardInvoke", 1f);
+        Invoke("destroyCardInvoke", 1.0f);
     }
 
     void destroyCardInvoke()
@@ -90,9 +122,24 @@ public class card : MonoBehaviour
 
     void closeCardInvoke()
     {
-        FailText.SetActive(false);
-        anim.SetBool("isOpen", false);
-        transform.Find("back").gameObject.SetActive(true);
-        transform.Find("front").gameObject.SetActive(false);
+        anim.enabled = false;
+        isFlip = true;
+
+        originalScale = transform.localScale;
+        targetScale = new Vector3(0, originalScale.y, originalScale.z);
+
+        transform.DOScale(targetScale, 0.2f).OnComplete(() =>
+        {
+            anim.enabled = true;
+            FailText.SetActive(false);
+            anim.SetBool("isOpen", false);
+            transform.Find("back").gameObject.SetActive(true);
+            transform.Find("front").gameObject.SetActive(false);
+
+            transform.DOScale(originalScale, 0.2f).OnComplete(() =>
+            {
+                isFlip = false;
+            });
+        });
     }
 }

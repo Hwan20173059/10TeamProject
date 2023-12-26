@@ -32,12 +32,20 @@ public class audioManager : MonoBehaviour
         //KangSungwon Commit Test
     }
 
-    public void BGMPlay(AudioClip bgm) //¹è°æÀ½ ÇÃ·¹ÀÌ ÇØÁÖ´Â ÇÔ¼ö
+    public void BGMPlay(AudioClip bgm) //ë°°ê²½ìŒ í”Œë ˆì´ í•´ì£¼ëŠ” í•¨ìˆ˜
     {
+
+        // BGM ë¹ ë¥´ê²Œ í•˜ê¸°
+        if (GameManager.I.timeText.text == "20.00")
+        {
+            audioSource.pitch = 1.3f;
+        }
+
         audioSource.clip = bgm;
-        audioSource.loop = true;//¹è°æÀ½ÀÌ´Ï±î °è¼Ó ³ª¿Àµµ·Ï
+        audioSource.loop = true;//ë°°ê²½ìŒì´ë‹ˆê¹Œ ê³„ì† ë‚˜ì˜¤ë„ë¡
         audioSource.volume = 0.3f;
         audioSource.Play();
+
     }
 
     //URL Change Test

@@ -24,9 +24,13 @@ public class GameManager : MonoBehaviour
     public GameObject firstCard;
     public GameObject secondCard;
 
-    public bool countDownCheck = false; // kim ÀÛ¾÷³»¿ë Ãß°¡
+
+    public Animator lastDence;
+
+    public bool countDownCheck = false; // kim ìž‘ì—…ë‚´ìš© ì¶”ê°€
     float countDown = 5.0f;
-    public Text countDownTxt; // ³¡
+    public Text countDownTxt; // ë
+
 
     void Awake()
     {
@@ -115,6 +119,13 @@ public class GameManager : MonoBehaviour
             TimerManager.instance.StopTimer();
         }
 
+        // 20ì´ˆ ë¶€í„° ë¶‰ì€ ìˆ«ìžì™€ ê¹œë¹¡ìž„
+        if (time >= 20.0f)
+        {
+            lastDence.SetBool("emg", true);
+        }
+
+
         if (countDownCheck)
         {
             countDown -= Time.deltaTime;
@@ -126,6 +137,7 @@ public class GameManager : MonoBehaviour
                 countDown = 5.0f;
             }
         }
+
 
     }
 
@@ -153,7 +165,7 @@ public class GameManager : MonoBehaviour
         else
         {
             audioManager.instance.SFXPlay("mismatch", mismatch);
-            firstCard.transform.Find("back").GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 164 / 255f, 0, 255f); // µÚÁýÈù Ä«µå »ö º¯È­
+            firstCard.transform.Find("back").GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 164 / 255f, 0, 255f); // ë’¤ì§‘ížŒ ì¹´ë“œ ìƒ‰ ë³€í™”
             secondCard.transform.Find("back").GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 164 / 255f, 0, 255f);
             firstCard.GetComponent<card>().closeCard();
             secondCard.GetComponent<card>().closeCard();
