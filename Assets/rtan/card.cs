@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +9,6 @@ public class card : MonoBehaviour
     public Animator anim;
 
     public AudioClip flips;
-    public AudioSource audioSource;
 
     public GameObject NameText;
     public GameObject FailText;
@@ -39,7 +39,7 @@ public class card : MonoBehaviour
 
     public void openCard()
     {
-        audioSource.PlayOneShot(flips);
+        audioManager.instance.SFXPlay("flips", flips);
         anim.SetBool("isOpen", true);
 
         Invoke("flip", 0.3f);
