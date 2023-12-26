@@ -54,13 +54,12 @@ public class card : MonoBehaviour
             anim.enabled = false;
             isFlip = true;
 
-
             originalScale = transform.localScale;
             targetScale = new Vector3(0, originalScale.y, originalScale.z);
 
             transform.DOScale(targetScale, 0.2f).OnComplete(() =>
             {
-                audioSource.PlayOneShot(flips);
+                //audioSource.PlayOneShot(flips);
 
                 anim.enabled = true;
                 anim.SetBool("isOpen", true);
@@ -73,19 +72,17 @@ public class card : MonoBehaviour
                 });
             });
             if (GameManager.I.firstCard == null)
-        {
+            {
             GameManager.I.countDownCheck = true; // kim
             GameManager.I.firstCard = gameObject;
             GameManager.I.firstCard.transform.Find("back").GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 164 / 255f, 0, 255f); // kim   
-        }
-        else
-        {
+            }
+            else
+            {
             GameManager.I.secondCard = gameObject;
             GameManager.I.isMatched();
+            }
         }
-        }
-    }
-
     }
 
     public void CountDown() // kim

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using static UnityEngine.ParticleSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,7 +13,9 @@ public class GameManager : MonoBehaviour
     public Text timeText;
     public GameObject card;
     public GameObject endTxt;
+    public GameObject end; // ¸¶Áö¸· °á°ú ÅØ½ºÆ® ÆË¾÷Ã¢
     public GameObject failTxt;
+    public GameObject minusTxt;
     float time;
 
     public AudioSource audioSource;
@@ -24,12 +27,11 @@ public class GameManager : MonoBehaviour
     public GameObject firstCard;
     public GameObject secondCard;
 
-
-    public Animator lastDence;
-
-    public bool countDownCheck = false; // kim ìž‘ì—…ë‚´ìš© ì¶”ê°€
+    public bool countDownCheck = false; // kim ÀÛ¾÷³»¿ë Ãß°¡
     float countDown = 5.0f;
-    public Text countDownTxt; // ë
+    public Text countDownTxt; // ³¡
+
+    int trial = 0;// ½Ãµµ È½¼ö
 
 
     void Awake()
@@ -113,18 +115,11 @@ public class GameManager : MonoBehaviour
     {
         timeText.text = TimerManager.instance.elapsedTime.ToString("N2");
 
-        if(time > 30)
+        if(TimerManager.instance.elapsedTime > 60)//timermanagerÀÇ ½Ã°£À» Ã¼Å©ÇÏ¿© 60ÃÊ°¡ ³ÑÀ¸¸é ½ÇÆÐ°¡ ¶ä
         {
             failTxt.SetActive(true);
             TimerManager.instance.StopTimer();
         }
-
-        // 20ì´ˆ ë¶€í„° ë¶‰ì€ ìˆ«ìžì™€ ê¹œë¹¡ìž„
-        if (time >= 20.0f)
-        {
-            lastDence.SetBool("emg", true);
-        }
-
 
         if (countDownCheck)
         {
@@ -138,13 +133,13 @@ public class GameManager : MonoBehaviour
             }
         }
 
-
     }
 
     public void isMatched()
     {
         string firstCardImage = firstCard.transform.Find("front").GetComponent<SpriteRenderer>().sprite.name;
         string secondCardImage = secondCard.transform.Find("front").GetComponent<SpriteRenderer>().sprite.name;
+        trial++;
 
         if (firstCardImage == secondCardImage)
         {
@@ -152,6 +147,8 @@ public class GameManager : MonoBehaviour
 
             firstCard.GetComponent<card>().destroyCard();
             secondCard.GetComponent<card>().destroyCard();
+
+            
             countDownCheck = false;  // kim 
             countDown = 5.0f;
 
@@ -165,7 +162,9 @@ public class GameManager : MonoBehaviour
         else
         {
             audioManager.instance.SFXPlay("mismatch", mismatch);
-            firstCard.transform.Find("back").GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 164 / 255f, 0, 255f); // ë’¤ì§‘ížŒ ì¹´ë“œ ìƒ‰ ë³€í™”
+            TimerManager.instance.IncreaseTime(3.0f);//Æ²¸®¸é ½Ã°£ÀÌ Áõ°¡µÇ´Â ¹®
+     
+            firstCard.transform.Find("back").GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 164 / 255f, 0, 255f); // µÚÁýÈù Ä«µå »ö º¯È­
             secondCard.transform.Find("back").GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 164 / 255f, 0, 255f);
             firstCard.GetComponent<card>().closeCard();
             secondCard.GetComponent<card>().closeCard();
@@ -177,9 +176,23 @@ public class GameManager : MonoBehaviour
         secondCard = null;
     }
 
-    void endgame()
+    void endgame()//Á¤»óÀûÀ¸·Î ´Ù ¸ÂÃß°í Á¾·áÇÏ¸é °á°ú Á¡¼ö Ç¥½Ã
     {
-        endTxt.SetActive(true);
+        float finalTime = 30f - time;
+
+        if (finalTime < 0)
+        {
+            finalTime = 0;
+            endTxt.GetComponent<Text>().text = "½ÃµµÇÑ È½¼ö : " + trial + "\n" + "³²Àº ½Ã°£ : " + finalTime + "\n" +
+    "Á¡¼ö : " + 0;
+        }
+        else
+        {
+            endTxt.GetComponent<Text>().text = "½ÃµµÇÑ È½¼ö : " + trial + "\n" + "³²Àº ½Ã°£ : " + finalTime + "\n" +
+    "Á¡¼ö : " + (trial * 3 + Mathf.Sqrt(finalTime));
+        }
+
+        end.SetActive(true);
         TimerManager.instance.StopTimer();
     }
 
