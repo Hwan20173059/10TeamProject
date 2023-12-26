@@ -17,6 +17,10 @@ public class audioManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        // BGM 빠르게 하기
+        if (GameManager.I.timeText.text == "20.00")
+        {
+            audioSource.pitch = 1.3f;
+        }
     }
 }

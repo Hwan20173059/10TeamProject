@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
     public GameObject firstCard;
     public GameObject secondCard;
 
+    public Animator lastDence;
+
     void Awake()
     {
         I = this;
@@ -109,6 +111,11 @@ public class GameManager : MonoBehaviour
         {
             failTxt.SetActive(true);
             Time.timeScale = 0.0f;
+        }
+        // 20ÃÊ ºÎÅÍ ºÓÀº ¼ýÀÚ¿Í ±ôºýÀÓ
+        if (time >= 20.0f)
+        {
+            lastDence.SetBool("emg", true);
         }
     }
 

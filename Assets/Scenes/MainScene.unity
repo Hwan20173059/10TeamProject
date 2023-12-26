@@ -167,7 +167,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.63
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -834,6 +834,7 @@ GameObject:
   - component: {fileID: 1106529913}
   - component: {fileID: 1106529915}
   - component: {fileID: 1106529914}
+  - component: {fileID: 1106529916}
   m_Layer: 5
   m_Name: TimeText
   m_TagString: Untagged
@@ -902,6 +903,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1106529912}
   m_CullTransparentMesh: 1
+--- !u!95 &1106529916
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1106529912}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5bdc37febcb1cca47ba2f9e753b644c0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2055962599
 GameObject:
   m_ObjectHideFlags: 0
@@ -942,6 +964,7 @@ MonoBehaviour:
   match: {fileID: 8300000, guid: 00b162357490c5a4680ee5033ddb71b1, type: 3}
   firstCard: {fileID: 0}
   secondCard: {fileID: 0}
+  lastDence: {fileID: 1106529916}
 --- !u!4 &2055962601
 Transform:
   m_ObjectHideFlags: 0

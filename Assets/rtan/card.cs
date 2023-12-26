@@ -63,7 +63,7 @@ public class card : MonoBehaviour
     public void destroyCard()
     {
         NameText.SetActive(true);
-        Invoke("destroyCardInvoke", 1f);
+        Invoke("destroyCardInvoke", 1.0f);
     }
 
     void destroyCardInvoke()
