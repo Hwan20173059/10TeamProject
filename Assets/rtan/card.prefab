@@ -339,11 +339,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 4553669074120461622}
   flips: {fileID: 8300000, guid: b842c390cffacf94dbb742b97c4f7bb9, type: 3}
-  audioSource: {fileID: 274573562824027466}
   NameText: {fileID: 1078848547620953782}
   FailText: {fileID: 5683149525301440523}
+  Explosion: {fileID: 139366, guid: b185c1a9cf067374586d095111b15bd1, type: 3}
   Type: 0
   Name: {fileID: 4074325067781448346}
+  finalX: 0
+  finalY: 0
 --- !u!82 &274573562824027466
 AudioSource:
   m_ObjectHideFlags: 0
