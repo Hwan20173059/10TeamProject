@@ -170,14 +170,8 @@ public class GameManager : MonoBehaviour
             
             countDownCheck = false;  // kim 
             countDown = 5.0f;
+            Invoke("LeftCardCheck", 1.0f);
 
-            int cardsLeft = GameObject.Find("Cards").transform.childCount;
-            Debug.Log(cardsLeft);
-            if (cardsLeft <= 2)
-            {
-                TimerManager.instance.timeStop = true;
-                Invoke("endgame", 1.0f);
-            }
         }
         else
         {
@@ -195,6 +189,18 @@ public class GameManager : MonoBehaviour
         firstCard = null;
         secondCard = null;
     }
+
+    public void LeftCardCheck()
+    {
+
+        int cardsLeft = GameObject.Find("Cards").transform.childCount;
+        Debug.Log(cardsLeft);
+        if (cardsLeft <= 2)
+        {
+            TimerManager.instance.timeStop = true;
+            Invoke("endgame", 1.0f);
+        }
+    }    
 
     void endgame()//정상적으로 다 맞추고 종료하면 결과 점수 표시
     {
