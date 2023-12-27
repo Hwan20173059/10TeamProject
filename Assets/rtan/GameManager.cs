@@ -205,17 +205,20 @@ public class GameManager : MonoBehaviour
     void endgame()//정상적으로 다 맞추고 종료하면 결과 점수 표시
     {
         float finalTime = 90f - time;
+        string finalT = string.Format("{0:N2}", finalTime);
 
         if (finalTime < 0)
         {
             finalTime = 0;
-            endTxt.GetComponent<Text>().text = "시도한 횟수 : " + trial + "\n" + "남은 시간 : " + finalTime + "\n" +
+            endTxt.GetComponent<Text>().text = "시도한 횟수 : " + trial + "\n" + "남은 시간 : " + finalT + "\n" +
     "점수 : " + 0;
         }
         else
         {
-            endTxt.GetComponent<Text>().text = "시도한 횟수 : " + trial + "\n" + "남은 시간 : " + finalTime + "\n" +
-    "점수 : " + (trial * 3 + Mathf.Sqrt(finalTime));
+            float resultNumb = trial * 3 + Mathf.Sqrt(finalTime);
+            string result = string.Format("{0:N2}", resultNumb);
+            endTxt.GetComponent<Text>().text = "시도한 횟수 : " + trial + "\n" + "남은 시간 : " + finalT + "\n" +
+    "점수 : " + result;
         }
 
         end.SetActive(true);
