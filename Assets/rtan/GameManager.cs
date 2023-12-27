@@ -204,7 +204,7 @@ public class GameManager : MonoBehaviour
 
     void endgame()//정상적으로 다 맞추고 종료하면 결과 점수 표시
     {
-        float finalTime = 30f - time;
+        float finalTime = 90f - time;
 
         if (finalTime < 0)
         {
