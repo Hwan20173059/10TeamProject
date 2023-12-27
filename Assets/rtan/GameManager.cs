@@ -103,6 +103,7 @@ public class GameManager : MonoBehaviour
         {
             failTxt.SetActive(true);
             TimerManager.instance.StopTimer();
+            Time.timeScale = 0.0f;
         }
         // 90초 기준 60초 이후부터 플레이어에게 시간 경고 표시
         if (TimerManager.instance.elapsedTime >= 60)
@@ -122,6 +123,8 @@ public class GameManager : MonoBehaviour
                 countDown = 5.0f;
             }
         }
+
+
 
     }
 
