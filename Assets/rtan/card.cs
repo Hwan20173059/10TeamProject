@@ -56,7 +56,7 @@ public class card : MonoBehaviour
             {
                 transform.position = new Vector3(finalX, finalY, 0);
                 checkOnce = 1;
-                GameManager.I.BombPlay(finalX, finalY);
+                //GameManager.I.BombPlay(finalX, finalY);
                 checkCount = 0;
                 checkGo = false;
             }
@@ -85,7 +85,7 @@ public class card : MonoBehaviour
                 else if ((finalX - extraX) == 0 && (finalY - extraY) == 0)
                 {
                     transform.position = new Vector3(finalX, finalY, 0);
-                    GameManager.I.BombPlay(finalX, finalY);
+                    //GameManager.I.BombPlay(finalX, finalY);
                     checkCount = 0;
                     checkGo = false;
                 }

@@ -8,14 +8,14 @@ public class TimerManager : MonoBehaviour
 {
     public static TimerManager instance;
     public GameObject plusTimeText;
-    public bool timeStop = false;
+    public bool timeStop = true;
 
     public float elapsedTime { get; private set; }
 
     private void Awake()
     {
         instance = this;
-        Time.timeScale = 1f;
+        Time.timeScale = 0.0f;
     }
     void Start()
     {
@@ -34,7 +34,7 @@ public class TimerManager : MonoBehaviour
         }
         else
         {
-
+            elapsedTime = elapsedTime;
         }
        
     }
@@ -54,11 +54,14 @@ public class TimerManager : MonoBehaviour
 
     public void StopTimer() 
     {
-        Time.timeScale = 0.0f;
+        elapsedTime = elapsedTime;
+        timeStop = true;
+
     }
 
     public void StartTimer()
     {
+        timeStop = false;
         Time.timeScale = 1f;
     }
 }

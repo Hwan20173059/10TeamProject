@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject firstCard;
     public GameObject secondCard;
-    public GameObject Explosion;
+    //public GameObject Explosion;
 
     public bool countDownCheck = false; // kim 작업내용 추가
     float countDown = 5.0f;
@@ -51,7 +51,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Time.timeScale = 1.0f;
+        Time.timeScale = 0.0f;
+        TimerManager.instance.StopTimer();
 
         if(difficult == 0 )
         {
@@ -90,7 +91,7 @@ public class GameManager : MonoBehaviour
             chance = 0;
 
         }
-        else if (cardNumb >= maxNumb && chance == 20 && startcheck == false)
+        else if (cardNumb >= maxNumb && chance == 150 && startcheck == false)
         {
             TimerManager.instance.StartTimer();
             startcheck = true;
@@ -143,12 +144,12 @@ public class GameManager : MonoBehaviour
         newCard.transform.Find("front").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(rtanName);
     }
 
-    public void BombPlay(float x, float y)
+    /*public void BombPlay(float x, float y)
     {
         GameObject newBomb = Instantiate(Explosion);
         Explosion.transform.position = new Vector3(x, y, 0);
         Destroy(newBomb);
-    }
+    }*/
 
     public void isMatched()
     {
@@ -169,7 +170,7 @@ public class GameManager : MonoBehaviour
 
             int cardsLeft = GameObject.Find("Cards").transform.childCount;
             Debug.Log(cardsLeft);
-            if (cardsLeft == 2)
+            if (cardsLeft <= 2)
             {
                 TimerManager.instance.timeStop = true;
                 Invoke("endgame", 1.0f);
@@ -209,7 +210,7 @@ public class GameManager : MonoBehaviour
         }
 
         end.SetActive(true);
-        TimerManager.instance.StopTimer();
+        Time.timeScale = 0.0f;
     }
 
 }
