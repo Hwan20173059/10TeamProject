@@ -16,4 +16,5 @@ public class plusTimeText : MonoBehaviour
     {
         transform.position += new Vector3(0,100,0) * Time.deltaTime;
     }
+    //으아아 이것은 테스트 커밋을 위한 의미 없는 주석이다.
 }

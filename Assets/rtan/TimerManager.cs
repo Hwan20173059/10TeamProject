@@ -43,7 +43,7 @@ public class TimerManager : MonoBehaviour
     {
         elapsedTime += plusTime;
         GameObject newPlusTime = Instantiate(plusTimeText);
-        newPlusTime.transform.parent = GameObject.Find("Canvas").transform;
+        newPlusTime.transform.SetParent(GameObject.Find("Canvas").transform);
         plusTimeText.GetComponent<Text>().text = "+" + plusTime.ToString();
     }
 
