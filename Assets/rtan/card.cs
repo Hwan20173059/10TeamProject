@@ -13,6 +13,7 @@ public class card : MonoBehaviour
 
     public GameObject NameText;
     public GameObject FailText;
+    public GameObject Explosion;
 
     public int Type = 0;
     public Text Name;
@@ -47,16 +48,23 @@ public class card : MonoBehaviour
             transform.DOKill();
         }*/
 
+
         check1++;
 
         if (check1 == 10 && checkGo == true)
         {
+            check1 = 0;
 
             if (checkCount == 10)
             {
                 transform.position = new Vector3(finalX, finalY, 0);
                 checkOnce = 1;
-                //GameManager.I.BombPlay(finalX, finalY);
+
+                GameObject newBomb = Instantiate(Explosion);
+                newBomb.transform.position = new Vector3(finalX, finalY, 0);
+                newBomb.GetComponent<Bomb>().aniPlay = true;
+                newBomb.GetComponent<Bomb>().destroyInvoke();
+
                 checkCount = 0;
                 checkGo = false;
             }
@@ -84,14 +92,11 @@ public class card : MonoBehaviour
                 }
                 else if ((finalX - extraX) == 0 && (finalY - extraY) == 0)
                 {
-                    transform.position = new Vector3(finalX, finalY, 0);
-                    //GameManager.I.BombPlay(finalX, finalY);
-                    checkCount = 0;
-                    checkGo = false;
+                    checkCount = 10;
+                    check1 = 9;
                 }
 
             }
-            check1 = 0;
 
         }
         else if (checkGo == false && checkOnce == 1)

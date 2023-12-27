@@ -1379,6 +1379,7 @@ MonoBehaviour:
   lastDence: {fileID: 1106529916}
   firstCard: {fileID: 0}
   secondCard: {fileID: 0}
+  Explosion: {fileID: 139366, guid: b185c1a9cf067374586d095111b15bd1, type: 3}
   countDownCheck: 0
   countDownTxt: {fileID: 1214734146}
 --- !u!4 &2055962601

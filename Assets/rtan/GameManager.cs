@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour
 
     public GameObject firstCard;
     public GameObject secondCard;
-    //public GameObject Explosion;
 
     public bool countDownCheck = false; // kim 작업내용 추가
     float countDown = 5.0f;
@@ -147,12 +146,6 @@ public class GameManager : MonoBehaviour
         newCard.transform.Find("front").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(rtanName);
     }
 
-    /*public void BombPlay(float x, float y)
-    {
-        GameObject newBomb = Instantiate(Explosion);
-        Explosion.transform.position = new Vector3(x, y, 0);
-        Destroy(newBomb);
-    }*/
 
     public void isMatched()
     {
